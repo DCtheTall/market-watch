@@ -1,0 +1,19 @@
+{
+  "name": "market-watch",
+  "version": "1.0.0",
+  "description": "A real time stock market app",
+  "main": "bin/www.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DCtheTall/market-watch.git"
+  },
+  "author": "Dylan Cutler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DCtheTall/market-watch/issues"
+  },
+  "homepage": "https://github.com/DCtheTall/market-watch#readme"
+}
