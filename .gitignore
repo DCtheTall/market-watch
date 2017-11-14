@@ -3,3 +3,7 @@ node_modules/
 
 # Environmental variables (development)
 .env
+
+# Publicly traded companies (source: http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQ)
+data/companies.csv
+data/companies.json
