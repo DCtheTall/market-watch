@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 /**
  * getActiveCompanies
  * @param {Express.Request} req HTTP request
@@ -5,13 +7,14 @@
  * @returns {undefined}
  */
 async function getActiveCompanies(req, res) {
+  const { Company } = models;
   try {
-    const { Company } = models;
-    const companies = await Company.find({ active: true }).exec();
+    let companies = await Company.find({ active: true });
+    // TODO get stock data based on query parameters passed to this route
     res.status(200).json({ companies });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ err });
+    res.status(500).send('Failed to get active companies');
   }
 }
 
