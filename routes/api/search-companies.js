@@ -12,7 +12,7 @@ async function searchCompanies(req, res) {
     const companies = await Company.find({
       $or: [{ name: regex }, { symbol: regex }],
     })
-    .sort({ name: 1 });
+    .sort({ symbol: 1 });
     res.status(200).json({ companies });
   } catch (err) {
     console.log(err);
