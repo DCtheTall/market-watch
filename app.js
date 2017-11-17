@@ -14,5 +14,6 @@ app.use(bodyParser.urlencoded({ limit: '5mb', extended: false }));
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(morgan('dev'));
 app.use(routes);
+app.use(express.static(`${__dirname}/public`));
 
 module.exports = app;

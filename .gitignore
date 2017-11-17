@@ -7,3 +7,8 @@ node_modules/
 # Publicly traded companies (source: http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQ)
 data/companies.csv
 data/companies.json
+
+# JavaScript bundles
+public/*.js
+public/*.css
+public/index.html
