@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // Paths are relative to the root of the project
@@ -33,8 +33,8 @@ module.exports = {
         loader: 'html-loader',
       },
       {
-        test: /.css$/,
-        loader: ExtractTextWebpackPlugin.extract('css-loader?sourceMap', 'style-loader'),
+        test: /.scss$/,
+        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader!sass-loader' }),
       },
       {
         test: /.css$/,

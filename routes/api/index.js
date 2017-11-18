@@ -6,6 +6,6 @@ const searchCompanies = require('./search-companies');
 const router = Router();
 router.get('/companies/active', getActiveCompanies);
 router.get('/companies/search', searchCompanies);
-router.put('/company/:id', toggleCompanyActive);
+router.put('/company/:id/active', toggleCompanyActive);
 
 module.exports = router;
