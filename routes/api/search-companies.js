@@ -1,3 +1,5 @@
+const { compareTwoStrings } = require('string-similarity');
+
 /**
  * searchCompanies
  * @param {Express.Request} req HTTP request
@@ -9,11 +11,21 @@ async function searchCompanies(req, res) {
   const { q } = req.query;
   const regex = new RegExp(q.trim(), 'i');
   try {
-    const companies = await Company.find({
+    let companies = await Company.find({
       $or: [{ name: regex }, { symbol: regex }],
-    })
-    .sort({ symbol: 1 });
-    res.status(200).json({ companies });
+      active: false,
+    });
+    companies = companies.map(company => ({
+      company,
+      score: Math.max(
+        compareTwoStrings(company.symbol.toLowerCase(), q.toLowerCase()),
+        compareTwoStrings(company.name.toLowerCase(), q.toLowerCase())
+      ),
+    }))
+    .sort((a, b) => b.score - a.score)
+    .map(({ company }) => company)
+    .slice(0, 10);
+    res.status(200).json(companies);
   } catch (err) {
     console.log(err);
     res.status(500).send(`Failed to search companies. Query: ${q}`);

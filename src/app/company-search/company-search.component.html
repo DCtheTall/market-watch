@@ -1,0 +1,12 @@
+<div class="company-search-container">
+  <input
+    placeholder="Search companies..."
+    #searchInput
+    (keyup)="search(searchInput.value)"
+  />
+  <div className="search-results">
+    <div *ngFor="let company of companies$ | async">
+      {{company.symbol}} {{company.name}}
+    </div>
+  </div>
+</div>
