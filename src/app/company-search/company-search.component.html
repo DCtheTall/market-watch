@@ -5,8 +5,14 @@
     (keyup)="search(searchInput.value)"
   />
   <div className="search-results">
-    <div *ngFor="let company of companies$ | async">
+    <div
+      *ngFor="let company of companies$ | async"
+      class="search-result"
+    >
       {{company.symbol}} {{company.name}}
+      <button (click)="addCompany(company)">
+        <i class="fa fa-plus"></i>
+      </button>
     </div>
   </div>
 </div>

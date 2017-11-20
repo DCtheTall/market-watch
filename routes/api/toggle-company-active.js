@@ -11,7 +11,7 @@ async function toggleCompanyActive(req, res) {
     let company = await Company.findById(id).exec();
     company.active = !company.active;
     company = await company.save();
-    res.status(200).json({ company });
+    res.status(200).json(company);
   } catch (err) {
     console.log(err);
     res.status(500).send(`Failed to toggle active status for company id: ${id}`);

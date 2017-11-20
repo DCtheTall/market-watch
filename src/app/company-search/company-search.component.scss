@@ -1,1 +1,30 @@
 @import '../styles/base';
+
+company-search {
+  width: 100%;
+}
+
+.company-search-container {
+  background: $charcoal;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+
+  @media #{$desktop} {
+    height: unquote('calc(100% - 20px)');
+    width: unquote('calc(25% - 20px)');
+  }
+
+  @media #{$mobile} {
+    width: unquote('calc(100% - 20px)');
+  }
+
+  input {
+    border: solid 1px ligthen($charcoal, 10%);
+    font-size: 16px;
+    margin-bottom: 15px;
+    outline: none;
+    width: unquote('calc(100% - 10px)');
+  }
+}

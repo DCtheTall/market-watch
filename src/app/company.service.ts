@@ -9,8 +9,6 @@ import { Company } from './company';
 
 @Injectable()
 export class CompanyService {
-  private SEARCH_COMPANIES_URL = '/api/companies/search';
-
   constructor(
     private http: HttpClient
   ) {}
@@ -24,11 +22,17 @@ export class CompanyService {
 
   public search(query: string): Observable<Company[]> {
     if (!query.trim()) return of([]);
-    const url: string = `${this.SEARCH_COMPANIES_URL}/?q=${query.trim()}`;
+    const url: string = `/api/companies/search/?q=${query.trim()}`;
     return this.http.get<Company[]>(url)
-                    .do(data => console.log(data))
                     .pipe(
                       catchError(this.handleError('Searching companies', []))
+                    );
+  }
+
+  public toggleCompany(company: Company): Observable<Company> {
+    return this.http.put<Company>(`/api/company/${company._id}/active`, company)
+                    .pipe(
+                      catchError(this.handleError('Toggling a company actice', company))
                     );
   }
 }

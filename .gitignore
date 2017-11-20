@@ -8,7 +8,7 @@ node_modules/
 data/companies.csv
 data/companies.json
 
-# JavaScript bundles
+# Webpack bundles
 public/*.js
 public/*.css
 public/index.html

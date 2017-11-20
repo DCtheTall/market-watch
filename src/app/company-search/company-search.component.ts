@@ -15,7 +15,8 @@ import './company-search.component.scss';
   encapsulation: ViewEncapsulation.None,
 })
 export class CompanySearchComponent implements OnInit {
-  private searchQuery = new Subject<string>();
+  private searchQuery: string;
+  private searchQuerySubject = new Subject<string>();
   companies$: Observable<Company[]>;
 
   constructor(
@@ -23,14 +24,20 @@ export class CompanySearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.companies$ = this.searchQuery.pipe(
+    this.companies$ = this.searchQuerySubject.pipe(
       debounceTime(300),
-      distinctUntilChanged(),
+      // distinctUntilChanged(),
       switchMap((query: string) => this.companyService.search(query))
     );
   }
 
+  addCompany(company: Company): void {
+    this.companyService.toggleCompany(company)
+                       .subscribe(data => this.search(this.searchQuery));
+  }
+
   search(query: string): void {
-    this.searchQuery.next(query);
+    this.searchQuery = query;
+    this.searchQuerySubject.next(query);
   }
 }
