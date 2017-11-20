@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { CompanySearchComponent } from './company-search/company-search.component';
 import { ActiveCompaniesComponent } from './active-companies/active-companies.component';
 
+import { SocketService } from './socket.service';
 import { CompanyService } from './company.service';
 
 @NgModule({
@@ -18,7 +19,10 @@ import { CompanyService } from './company.service';
     CompanySearchComponent,
     ActiveCompaniesComponent,
   ],
-  providers: [CompanyService],
+  providers: [
+    SocketService,
+    CompanyService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

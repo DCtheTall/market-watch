@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { of } from 'rxjs/observable/of';
 import { debounceTime, catchError, switchMap } from 'rxjs/operators';
 
+import { SocketService } from './socket.service';
 import { Company } from './company';
 
 @Injectable()
@@ -14,8 +15,14 @@ export class CompanyService {
   private searchQuery = '';
 
   constructor(
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private socketService: SocketService
+  ) {
+    this.socketService.getMessages()
+                      .subscribe(() => {
+                        this.searchQuerySubject.next(this.searchQuery);
+                      });
+  }
 
   private handleError<T>(operation: string, result?: T) {
     return (err: Error): Observable<T> => {
@@ -35,7 +42,6 @@ export class CompanyService {
   }
 
   public pipeSearchQuery(): Observable<Company[]> {
-    // returns observable array of data
     return this.searchQuerySubject.pipe(
       debounceTime(300),
       switchMap((query: string) => this.searchCompanies(query))
@@ -43,18 +49,14 @@ export class CompanyService {
   }
 
   public updateSearchQuery(query: string): void {
-    // updates subject's value which causes it to get data
     this.searchQuerySubject.next(query);
   }
 
   public toggleCompany(company: Company): void {
-    // Toggle causes search request to be made again
     this.http.put<Company>(`/api/company/${company._id}/active`, company)
              .pipe(
                 catchError(this.handleError('Toggling a company actice', company))
               )
-              .subscribe(
-                () => this.searchQuerySubject.next(this.searchQuery)
-              );
+              .subscribe();
   }
 }

@@ -11,6 +11,7 @@ async function toggleCompanyActive(req, res) {
     let company = await Company.findById(id).exec();
     company.active = !company.active;
     company = await company.save();
+    req.app.io.sockets.emit('company-toggled', `${company.name} toggled ${company.active ? 'on' : 'off'} at ${new Date().toISOString()}`));
     res.status(200).json(company);
   } catch (err) {
     console.log(err);
