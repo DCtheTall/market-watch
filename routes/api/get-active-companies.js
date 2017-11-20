@@ -12,7 +12,7 @@ async function getActiveCompanies(req, res) {
     let companies = await Company.find({ active: true })
                                  .sort({ symbol: 1 });
     // TODO get stock data based on query parameters passed to this route
-    res.status(200).json({ companies });
+    res.status(200).json(companies);
   } catch (err) {
     console.log(err);
     res.status(500).send('Failed to get active companies');

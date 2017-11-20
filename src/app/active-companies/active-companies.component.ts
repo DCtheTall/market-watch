@@ -5,14 +5,14 @@ import { Observable } from 'rxjs/Observable';
 import { Company } from '../company';
 import { CompanyService } from '../company.service';
 
-import './company-search.component.scss';
+import './active-companies.component.scss';
 
 @Component({
-  selector: 'company-search',
-  templateUrl: './company-search.component.html',
+  selector: 'active-companies',
+  templateUrl: './active-companies.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class CompanySearchComponent implements OnInit {
+export class ActiveCompaniesComponent implements OnInit {
   public companies$: Observable<Company[]>;
 
   constructor(
@@ -20,14 +20,9 @@ export class CompanySearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.companies$ = this.companyService.pipeSearchQuery();
   }
 
-  addCompany(company: Company): void {
+  removeCompany(company: Company): void {
     this.companyService.toggleCompany(company);
   }
-
-  search(query: string): void {
-    this.companyService.updateSearchQuery(query);
-  }
-}
+ }

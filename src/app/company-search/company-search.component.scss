@@ -1,23 +1,22 @@
 @import '../styles/base';
 
 company-search {
-  width: 100%;
+  width: 25%;
+
+  @media #{$mobile} {
+    width: 100%;
+  }
 }
 
 .company-search-container {
   background: $charcoal;
-  border-radius: 3px;
   display: flex;
   flex-direction: column;
   padding: 10px;
+  width: unquote('calc(100% - 20px)');
 
   @media #{$desktop} {
     height: unquote('calc(100% - 20px)');
-    width: unquote('calc(25% - 20px)');
-  }
-
-  @media #{$mobile} {
-    width: unquote('calc(100% - 20px)');
   }
 
   input {

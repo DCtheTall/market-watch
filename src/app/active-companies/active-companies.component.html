@@ -1,0 +1,8 @@
+<div class="active-companies-container">
+  <div *ngFor="let company of companies$ | async">
+    {{company.symbol}} {{company.name}}
+    <button (click)="removeCompany(company)">
+      &times;
+    </button>
+  </div>
+</div>

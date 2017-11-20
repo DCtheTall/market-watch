@@ -8,4 +8,23 @@
   position: fixed;
   right: 0;
   top: 0;
+
+  @media #{$desktop} {
+    justify-content: space-between;
+  }
+
+  @media #{$mobile} {
+    flex-direction: column;
+  }
+
+  .chart-section {
+    background: $charcoal;
+    padding: 10px;
+    width: unquote('calc(74% - 20px)');
+
+    @media #{$mobile} {
+      margin-bottom: 10px;
+      width: unquote('calc(100% - 20px)');
+    }
+  }
 }
