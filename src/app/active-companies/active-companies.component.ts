@@ -20,6 +20,8 @@ export class ActiveCompaniesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.companies$ = this.companyService.activeCompanies;
+    this.companyService.getActiveCompanies();
   }
 
   removeCompany(company: Company): void {

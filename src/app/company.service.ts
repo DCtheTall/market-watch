@@ -3,14 +3,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Observer } from 'rxjs/Observer';
 import { of } from 'rxjs/observable/of';
-import { debounceTime, catchError, switchMap } from 'rxjs/operators';
+import { debounceTime, catchError, switchMap, map } from 'rxjs/operators';
 
 import { SocketService } from './socket.service';
 import { Company } from './company';
 
 @Injectable()
 export class CompanyService {
+  public activeCompanies: Observable<Company[]>;
+  private activeCompanyEmitter: Observer<Company[]>;
   private searchQuerySubject = new Subject<string>();
   private searchQuery = '';
 
@@ -18,8 +21,12 @@ export class CompanyService {
     private http: HttpClient,
     private socketService: SocketService
   ) {
+    this.activeCompanies = Observable.create((observer: Observer<Company[]>) => {
+      this.activeCompanyEmitter = observer;
+    });
     this.socketService.getMessages()
-                      .subscribe(() => {
+                      .subscribe((data) => {
+                        this.getActiveCompanies();
                         this.searchQuerySubject.next(this.searchQuery);
                       });
   }
@@ -31,9 +38,20 @@ export class CompanyService {
     };
   }
 
-  private searchCompanies(query: string): Observable<Company[]> {
-    if (!query.trim()) return of([]);
-    this.searchQuery = query.trim();
+  public getActiveCompanies(): void {
+    this.http.get<Company[]>('/api/companies/active')
+            .pipe(
+              catchError(this.handleError('Getting active companies', []))
+            )
+            .subscribe((data: Company[]) => {
+              this.activeCompanyEmitter.next(data);
+            });
+  }
+
+  private searchCompanies(_query: string): Observable<Company[]> {
+    const query = _query.trim();
+    if (!query) return of([]);
+    this.searchQuery = query;
     const url: string = `/api/companies/search/?q=${query.trim()}`;
     return this.http.get<Company[]>(url)
                     .pipe(

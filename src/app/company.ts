@@ -3,5 +3,6 @@ export interface Company {
   name: string;
   symbol: string;
   active: boolean;
+  score?: number;
   data?: any[];
 }

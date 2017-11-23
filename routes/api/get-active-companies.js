@@ -9,8 +9,8 @@ const axios = require('axios');
 async function getActiveCompanies(req, res) {
   const { Company } = models;
   try {
-    let companies = await Company.find({ active: true })
-                                 .sort({ symbol: 1 });
+    const companies = await Company.find({ active: true })
+                                   .sort({ symbol: 1 });
     // TODO get stock data based on query parameters passed to this route
     res.status(200).json(companies);
   } catch (err) {
