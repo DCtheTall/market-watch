@@ -12,10 +12,12 @@ import { Company } from './company';
 
 @Injectable()
 export class CompanyService {
-  public activeCompanies: Observable<Company[]>;
   private activeCompanyEmitter: Observer<Company[]>;
   private searchQuerySubject = new Subject<string>();
   private searchQuery = '';
+
+  public activeCompanies: Observable<Company[]>;
+  public numberOfActiveCompanies = 0;
 
   constructor(
     private http: HttpClient,
@@ -25,7 +27,7 @@ export class CompanyService {
       this.activeCompanyEmitter = observer;
     });
     this.socketService.getMessages()
-                      .subscribe((data) => {
+                      .subscribe(() => {
                         this.getActiveCompanies();
                         this.searchQuerySubject.next(this.searchQuery);
                       });
@@ -44,6 +46,11 @@ export class CompanyService {
               catchError(this.handleError('Getting active companies', []))
             )
             .subscribe((data: Company[]) => {
+              this.numberOfActiveCompanies = data.length;
+              if (data.length === 10) {
+                this.searchQuery = '';
+                this.searchQuerySubject.next('');
+              }
               this.activeCompanyEmitter.next(data);
             });
   }

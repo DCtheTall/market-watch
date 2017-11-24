@@ -2,5 +2,5 @@
   <div class="chart-section">
     <active-companies></active-companies>
   </div>
-  <company-search></company-search>
+  <company-search *ngIf="companyService.numberOfActiveCompanies < 10"></company-search>
 </div>

@@ -13,7 +13,7 @@ import './active-companies.component.scss';
   encapsulation: ViewEncapsulation.None,
 })
 export class ActiveCompaniesComponent implements OnInit {
-  public companies$: Observable<Company[]>;
+  private companies$: Observable<Company[]>;
 
   constructor(
     private companyService: CompanyService

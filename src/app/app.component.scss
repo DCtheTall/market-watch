@@ -19,12 +19,6 @@
 
   .chart-section {
     background: $charcoal;
-    padding: 10px;
-    width: unquote('calc(74% - 20px)');
-
-    @media #{$mobile} {
-      margin-bottom: 10px;
-      width: unquote('calc(100% - 20px)');
-    }
+    width: 100%;
   }
 }

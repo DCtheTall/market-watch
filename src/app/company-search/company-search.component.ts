@@ -13,7 +13,7 @@ import './company-search.component.scss';
   encapsulation: ViewEncapsulation.None,
 })
 export class CompanySearchComponent implements OnInit {
-  public companies$: Observable<Company[]>;
+  private companies$: Observable<Company[]>;
 
   constructor(
     private companyService: CompanyService

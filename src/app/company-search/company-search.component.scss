@@ -1,9 +1,13 @@
 @import '../styles/base';
 
 company-search {
-  width: 25%;
+  @media #{$desktop} {
+    margin-left: 10px;
+    width: 25%;
+  }
 
   @media #{$mobile} {
+    margin-top: 10px;
     width: 100%;
   }
 }
