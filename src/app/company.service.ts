@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { Observer } from 'rxjs/Observer';
+import { Subject } from 'rxjs/Subject';
 import { of } from 'rxjs/observable/of';
 import { debounceTime, catchError, switchMap, map } from 'rxjs/operators';
+
+import { MAXIMUM_ALLOWED_ACTIVE_COMPANIES } from './constants';
 
 import { SocketService } from './socket.service';
 import { Company } from './company';
 
 @Injectable()
 export class CompanyService {
-  private activeCompanyEmitter: Observer<Company[]>;
+  private activeCompanyObserver: Observer<Company[]>;
   private searchQuerySubject = new Subject<string>();
   private searchQuery = '';
 
@@ -24,13 +26,11 @@ export class CompanyService {
     private socketService: SocketService
   ) {
     this.activeCompanies = Observable.create((observer: Observer<Company[]>) => {
-      this.activeCompanyEmitter = observer;
+      this.activeCompanyObserver = observer;
     });
     this.socketService.getMessages()
-                      .subscribe(() => {
-                        this.getActiveCompanies();
-                        this.searchQuerySubject.next(this.searchQuery);
-                      });
+                      .subscribe(this.receiveSocketMessage.bind(this));
+    this.getActiveCompanies();
   }
 
   private handleError<T>(operation: string, result?: T) {
@@ -40,19 +40,24 @@ export class CompanyService {
     };
   }
 
-  public getActiveCompanies(): void {
+  private getActiveCompanies(): void {
     this.http.get<Company[]>('/api/companies/active')
             .pipe(
               catchError(this.handleError('Getting active companies', []))
             )
             .subscribe((data: Company[]) => {
               this.numberOfActiveCompanies = data.length;
-              if (data.length === 10) {
+              if (data.length === MAXIMUM_ALLOWED_ACTIVE_COMPANIES) {
                 this.searchQuery = '';
                 this.searchQuerySubject.next('');
               }
-              this.activeCompanyEmitter.next(data);
+              this.activeCompanyObserver.next(data);
             });
+  }
+
+  private receiveSocketMessage(): void {
+    this.getActiveCompanies();
+    this.searchQuerySubject.next(this.searchQuery);
   }
 
   private searchCompanies(_query: string): Observable<Company[]> {

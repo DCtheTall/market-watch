@@ -2,12 +2,12 @@
 
 company-search {
   @media #{$desktop} {
-    margin-left: 10px;
+    margin-left: 5px;
     width: 25%;
   }
 
   @media #{$mobile} {
-    margin-top: 10px;
+    margin-top: 5px;
     width: 100%;
   }
 }

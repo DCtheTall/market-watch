@@ -1,0 +1,17 @@
+@import '../styles/base';
+
+chart {
+  @media #{$desktop} {
+    height: 100%;
+  }
+
+  @media #{$mobile} {
+    height: 400px;
+  }
+}
+
+.chart {
+  border-bottom: solid 3px $background;
+  height: 100%;
+  width: 100%;
+}

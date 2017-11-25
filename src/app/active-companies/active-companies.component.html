@@ -1,8 +1,15 @@
 <div class="active-companies-container">
-  <div *ngFor="let company of companies$ | async">
-    {{company.symbol}} {{company.name}}
-    <button (click)="removeCompany(company)">
+  <button
+    *ngFor="let company of companies$ | async"
+    (click)="removeCompany(company)"
+  >
+    <span>
+      {{company.symbol}}
+      <br>
+      {{company.name}}
+    </span>
+    <span>
       &times;
-    </button>
-  </div>
+    </span>
+  </button>
 </div>
