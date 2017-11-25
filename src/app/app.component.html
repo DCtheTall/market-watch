@@ -1,7 +1,11 @@
 <div class="app-container">
+  <company-search
+    *ngIf="companyService.numberOfActiveCompanies < MAXIMUM_ALLOWED_ACTIVE_COMPANIES"
+  ></company-search>
   <div class="chart-section">
     <chart></chart>
-    <active-companies></active-companies>
+    <active-companies
+      *ngIf="companyService.numberOfActiveCompanies"
+    ></active-companies>
   </div>
-  <company-search *ngIf="companyService.numberOfActiveCompanies < 10"></company-search>
 </div>

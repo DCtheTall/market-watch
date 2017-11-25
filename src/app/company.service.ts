@@ -10,7 +10,10 @@ import { debounceTime, catchError, switchMap, map } from 'rxjs/operators';
 import { MAXIMUM_ALLOWED_ACTIVE_COMPANIES } from './constants';
 
 import { SocketService } from './socket.service';
+import { ChartService } from './chart.service';
+
 import { Company } from './company';
+import { ChartNode } from './chart-node';
 
 @Injectable()
 export class CompanyService {
@@ -23,7 +26,8 @@ export class CompanyService {
 
   constructor(
     private http: HttpClient,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private chartService: ChartService
   ) {
     this.activeCompanies = Observable.create((observer: Observer<Company[]>) => {
       this.activeCompanyObserver = observer;
@@ -46,12 +50,15 @@ export class CompanyService {
               catchError(this.handleError('Getting active companies', []))
             )
             .subscribe((data: Company[]) => {
+              const chartData: ChartNode[][] = [];
               this.numberOfActiveCompanies = data.length;
-              if (data.length === MAXIMUM_ALLOWED_ACTIVE_COMPANIES) {
+              if (!data.length || data.length === MAXIMUM_ALLOWED_ACTIVE_COMPANIES) {
                 this.searchQuery = '';
                 this.searchQuerySubject.next('');
               }
               this.activeCompanyObserver.next(data);
+              data.forEach(company => chartData.push(company.data));
+              this.chartService.chartDataObserver.next(chartData);
             });
   }
 

@@ -7,8 +7,12 @@ import { ChartNode } from './chart-node';
 
 @Injectable()
 export class ChartService {
-  public chartData: Observable<ChartNode[]>
-  public chartDataObserver: Observer<ChartNode[]>;
+  public chartData: Observable<ChartNode[][]>
+  public chartDataObserver: Observer<ChartNode[][]>;
 
-  constructor() {}
+  constructor() {
+    this.chartData = Observable.create((observer: Observer<ChartNode[][]>) => {
+      this.chartDataObserver = observer;
+    });
+  }
 }

@@ -2,25 +2,24 @@
 
 .app-container {
   bottom: 0;
-  display: flex;
   left: 0;
+  overflow-y: auto;
   padding: 10px;
   position: fixed;
   right: 0;
   top: 0;
 
   @media #{$desktop} {
+    display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
-  }
-
-  @media #{$mobile} {
-    flex-direction: column;
   }
 
   .chart-section {
     background: $charcoal;
     display: flex;
     flex-direction: column;
+    height: auto;
     width: 100%;
   }
 }

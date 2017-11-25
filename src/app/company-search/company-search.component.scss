@@ -7,7 +7,6 @@ company-search {
   }
 
   @media #{$mobile} {
-    margin-top: 5px;
     width: 100%;
   }
 }
@@ -21,6 +20,10 @@ company-search {
 
   @media #{$desktop} {
     height: unquote('calc(100% - 20px)');
+  }
+
+  @media #{$mobile} {
+    margin-bottom: 5px;
   }
 
   input {

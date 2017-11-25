@@ -8,6 +8,7 @@ import { ActiveCompaniesComponent } from './active-companies/active-companies.co
 import { ChartComponent } from './chart/chart.component';
 
 import { SocketService } from './socket.service';
+import { ChartService } from './chart.service';
 import { CompanyService } from './company.service';
 
 @NgModule({
@@ -23,6 +24,7 @@ import { CompanyService } from './company.service';
   ],
   providers: [
     SocketService,
+    ChartService,
     CompanyService,
   ],
   bootstrap: [AppComponent],
