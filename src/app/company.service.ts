@@ -7,7 +7,10 @@ import { Subject } from 'rxjs/Subject';
 import { of } from 'rxjs/observable/of';
 import { debounceTime, catchError, switchMap, map } from 'rxjs/operators';
 
-import { MAXIMUM_ALLOWED_ACTIVE_COMPANIES } from './constants';
+import {
+  MAXIMUM_ALLOWED_ACTIVE_COMPANIES,
+  INTERVAL_1_MINUTE,
+} from './constants';
 
 import { SocketService } from './socket.service';
 import { ChartService } from './chart.service';
@@ -31,10 +34,11 @@ export class CompanyService {
   ) {
     this.activeCompanies = Observable.create((observer: Observer<Company[]>) => {
       this.activeCompanyObserver = observer;
+      this.getActiveCompanies();
     });
+    this.activeCompanies.subscribe();
     this.socketService.getMessages()
                       .subscribe(this.receiveSocketMessage.bind(this));
-    this.getActiveCompanies();
   }
 
   private handleError<T>(operation: string, result?: T) {
@@ -44,21 +48,21 @@ export class CompanyService {
     };
   }
 
-  private getActiveCompanies(): void {
-    this.http.get<Company[]>('/api/companies/active')
+  public getActiveCompanies(): void {
+    this.http.get<Company[]>(`/api/companies/active?interval=${INTERVAL_1_MINUTE}`)
             .pipe(
               catchError(this.handleError('Getting active companies', []))
             )
             .subscribe((data: Company[]) => {
               const chartData: ChartNode[][] = [];
               this.numberOfActiveCompanies = data.length;
-              if (!data.length || data.length === MAXIMUM_ALLOWED_ACTIVE_COMPANIES) {
+              if (data.length === MAXIMUM_ALLOWED_ACTIVE_COMPANIES) {
                 this.searchQuery = '';
                 this.searchQuerySubject.next('');
               }
               this.activeCompanyObserver.next(data);
               data.forEach(company => chartData.push(company.data));
-              this.chartService.chartDataObserver.next(chartData);
+              // this.chartService.chartDataObserver.next(chartData);
             });
   }
 

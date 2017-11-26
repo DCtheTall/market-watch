@@ -1,1 +1,2 @@
+export const INTERVAL_1_MINUTE = '1min';
 export const MAXIMUM_ALLOWED_ACTIVE_COMPANIES = 10;
