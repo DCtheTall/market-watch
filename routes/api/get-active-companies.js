@@ -1,6 +1,9 @@
 const axios = require('axios');
 const {
   INTERVAL_1_MINUTE,
+  HIGH_KEY,
+  LOW_KEY,
+  CLOSE_KEY,
   TIME_SERIES_INTRADAY,
   TIME_SERIES_1_MINUTE,
   TIME_SERIES_DAILY,
@@ -39,10 +42,20 @@ async function getActiveCompanies(req, res) {
       data = data[key];
       data = Object.keys(data).map((date) => {
         const node = data[date];
-        return { ...node, date: new Date(date) };
+        return {
+          date: (new Date(date)).toISOString(),
+          high: +node[HIGH_KEY],
+          low: +node[LOW_KEY],
+          close: +node[CLOSE_KEY],
+        };
       }).sort((a, b) => new Date(a.date) - new Date(b.date));
 
       return { ...company._doc, data };
+    });
+    companies = companies.sort((a, b) => {
+      if (a.symbol < b.symbol) return -1;
+      if (a.symbol > b.symbol) return 1;
+      return 0;
     });
     res.status(200).json(companies);
   } catch (err) {

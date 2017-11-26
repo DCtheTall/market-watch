@@ -17,12 +17,12 @@ async function searchCompanies(req, res) {
     });
     companies = companies.map(company => ({
       company,
-      score: Math.max(
+      searchRelevancy: Math.max(
         compareTwoStrings(company.symbol.toLowerCase(), q.toLowerCase()),
         compareTwoStrings(company.name.toLowerCase(), q.toLowerCase())
       ),
     }))
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => b.searchRelevancy - a.searchRelevancy)
     .map(({ company }) => company)
     .slice(0, 10);
     res.status(200).json(companies);

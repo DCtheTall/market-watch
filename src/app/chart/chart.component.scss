@@ -10,6 +10,11 @@ chart {
   }
 }
 
+.chart {
+  height: 100%;
+  width: 100%;
+}
+
 .chart-container {
   border-bottom: solid 3px $background;
   height: 100%;

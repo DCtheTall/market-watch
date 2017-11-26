@@ -7,6 +7,8 @@ import { Subject } from 'rxjs/Subject';
 import { of } from 'rxjs/observable/of';
 import { debounceTime, catchError, switchMap, map } from 'rxjs/operators';
 
+import * as d3 from 'd3';
+
 import {
   MAXIMUM_ALLOWED_ACTIVE_COMPANIES,
   INTERVAL_1_MINUTE,
@@ -16,7 +18,6 @@ import { SocketService } from './socket.service';
 import { ChartService } from './chart.service';
 
 import { Company } from './company';
-import { ChartNode } from './chart-node';
 
 @Injectable()
 export class CompanyService {
@@ -54,15 +55,22 @@ export class CompanyService {
               catchError(this.handleError('Getting active companies', []))
             )
             .subscribe((data: Company[]) => {
-              const chartData: ChartNode[][] = [];
+              const getCompanyColor = <d3.ScaleLinear<number, number>>(
+                d3.scaleLinear()
+                  .domain([0, data.length - 1])
+                  .range([0, 240])
+              );
+              const companies = data.map((company: Company, i: number) => {
+                const color = `hsl(${getCompanyColor(i)}, 100%, 50%)`
+                return { ...company, color };
+              });
               this.numberOfActiveCompanies = data.length;
               if (data.length === MAXIMUM_ALLOWED_ACTIVE_COMPANIES) {
                 this.searchQuery = '';
                 this.searchQuerySubject.next('');
               }
-              this.activeCompanyObserver.next(data);
-              data.forEach(company => chartData.push(company.data));
-              // this.chartService.chartDataObserver.next(chartData);
+              this.activeCompanyObserver.next(companies);
+              this.chartService.companiesObserver.next(companies);
             });
   }
 

@@ -2,6 +2,7 @@
   <button
     *ngFor="let company of companies$ | async"
     (click)="removeCompany(company)"
+    [ngStyle]="{ 'border-color': company.color }"
   >
     <span>
       {{company.symbol}}

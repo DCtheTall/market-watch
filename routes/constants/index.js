@@ -1,4 +1,7 @@
 const INTERVAL_1_MINUTE = '1min';
+const HIGH_KEY = '2. high';
+const LOW_KEY = '3. low';
+const CLOSE_KEY = '4. close';
 const TIME_SERIES_INTRADAY = 'TIME_SERIES_INTRADAY';
 const TIME_SERIES_1_MINUTE = 'Time Series (1min)'
 const TIME_SERIES_DAILY = 'TIME_SERIES_DAILY';
@@ -7,6 +10,9 @@ const TIME_SERIES_MONTHLY = 'TIME_SERIES_MONTHLY';
 
 module.exports = {
   INTERVAL_1_MINUTE,
+  HIGH_KEY,
+  LOW_KEY,
+  CLOSE_KEY,
   TIME_SERIES_INTRADAY,
   TIME_SERIES_1_MINUTE,
   TIME_SERIES_DAILY,

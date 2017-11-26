@@ -5,6 +5,7 @@ export interface Company {
   name: string;
   symbol: string;
   active: boolean;
-  score?: number;
-  data?: ChartNode[];
+  searchRelevancy?: number;
+  data: ChartNode[];
+  color?: string;
 }
