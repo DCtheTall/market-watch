@@ -5,16 +5,19 @@ import { Observer } from 'rxjs/Observer';
 
 import * as d3 from 'd3';
 
+import { INTERVAL_1_MINUTE } from './constants';
 import { ChartNode } from './chart-node';
 import { Company } from './company';
 
 @Injectable()
 export class ChartService {
+  private chartIntervalObserver: Observer<string>;
   private colors: string[];
   private companies: Observable<Company[]>;
 
   public chartData: Observable<ChartNode[][]>
   public chartDataObserver: Observer<ChartNode[][]>;
+  public chartInterval: Observable<string>;
   public companiesObserver: Observer<Company[]>;
 
   constructor() {
@@ -27,6 +30,10 @@ export class ChartService {
       this.chartDataObserver = observer;
     });
     this.chartData.subscribe(this.updateChart.bind(this));
+
+    this.chartInterval = Observable.create((observer: Observer<string>) => {
+      this.chartIntervalObserver = observer;
+    });
   }
 
   private updateCompanies(data: Company[]): void {
@@ -37,6 +44,11 @@ export class ChartService {
       this.colors.push(company.color);
     });
     this.chartDataObserver.next(chartData);
+  }
+
+
+  public updateChartInterval(interval: string): void {
+    this.chartIntervalObserver.next(interval);
   }
 
   private updateChart(data: ChartNode[][]): void {

@@ -1,4 +1,18 @@
 <div class="chart">
+  <span class="heading">Stocks</span>
+  <div class="chart-controller">
+    <div class="label">
+      Zoom
+    </div>
+    <div>
+      <button
+        *ngFor="let interval of INTERVALS"
+        (click)="setChartInterval(interval)"
+      >
+        {{interval}}
+      </button>
+    </div>
+  </div>
   <div class="chart-container" id="chart-container">
     <svg class="chart-svg" #chartSvg id="chart-svg"></svg>
   </div>

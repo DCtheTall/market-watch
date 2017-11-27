@@ -24,6 +24,7 @@ export class CompanyService {
   private activeCompanyObserver: Observer<Company[]>;
   private searchQuerySubject = new Subject<string>();
   private searchQuery = '';
+  private chartInterval = INTERVAL_1_MINUTE;
 
   public activeCompanies: Observable<Company[]>;
   public numberOfActiveCompanies = 0;
@@ -40,6 +41,10 @@ export class CompanyService {
     this.activeCompanies.subscribe();
     this.socketService.getMessages()
                       .subscribe(this.receiveSocketMessage.bind(this));
+    this.chartService.chartInterval.subscribe((interval: string) => {
+      this.chartInterval = interval;
+      this.getActiveCompanies();
+    });
   }
 
   private handleError<T>(operation: string, result?: T) {
@@ -50,7 +55,7 @@ export class CompanyService {
   }
 
   public getActiveCompanies(): void {
-    this.http.get<Company[]>(`/api/companies/active?interval=${INTERVAL_1_MINUTE}`)
+    this.http.get<Company[]>(`/api/companies/active?interval=${this.chartInterval}`)
             .pipe(
               catchError(this.handleError('Getting active companies', []))
             )
@@ -61,7 +66,7 @@ export class CompanyService {
                   .range([0, 240])
               );
               const companies = data.map((company: Company, i: number) => {
-                const color = `hsl(${getCompanyColor(i)}, 100%, 50%)`
+                const color = `hsl(${getCompanyColor(i)}, 80%, 65%)`
                 return { ...company, color };
               });
               this.numberOfActiveCompanies = data.length;

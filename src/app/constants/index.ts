@@ -1,2 +1,15 @@
 export const INTERVAL_1_MINUTE = '1min';
+export const INTERVAL_5_MINUTES = '5min';
+export const INTERVAL_15_MINUTES = '15min';
+export const INTERVAL_30_MINUTES = '30min';
+export const INTERVAL_60_MINUTES = '60min';
+export const INTERVAL_DAILY = '1d';
+export const INTERVALS = [
+  INTERVAL_1_MINUTE,
+  INTERVAL_5_MINUTES,
+  INTERVAL_15_MINUTES,
+  INTERVAL_30_MINUTES,
+  INTERVAL_60_MINUTES,
+  INTERVAL_DAILY,
+];
 export const MAXIMUM_ALLOWED_ACTIVE_COMPANIES = 10;

@@ -1,14 +1,22 @@
 const axios = require('axios');
 const {
   INTERVAL_1_MINUTE,
+  INTERVAL_5_MINUTES,
+  INTERVAL_15_MINUTES,
+  INTERVAL_30_MINUTES,
+  INTERVAL_60_MINUTES,
+  INTERVAL_DAILY,
   HIGH_KEY,
   LOW_KEY,
   CLOSE_KEY,
   TIME_SERIES_INTRADAY,
   TIME_SERIES_1_MINUTE,
+  TIME_SERIES_5_MINUTES,
+  TIME_SERIES_15_MINUTES,
+  TIME_SERIES_30_MINUTES,
+  TIME_SERIES_60_MINUTES,
   TIME_SERIES_DAILY,
-  TIME_SERIES_WEEKLY,
-  TIME_SERIES_MONTHLY,
+  TIME_SERIES_DAILY_KEY,
 } = require('../constants');
 
 /**
@@ -26,7 +34,35 @@ async function getActiveCompanies(req, res) {
       let url = 'https://www.alphavantage.co/query?function=';
       let key = '';
 
-      switch(req.query.inverval) {
+      switch(req.query.interval) {
+        case INTERVAL_DAILY:
+          url += TIME_SERIES_DAILY;
+          key = TIME_SERIES_DAILY_KEY;
+          break;
+        case INTERVAL_60_MINUTES:
+          url += TIME_SERIES_INTRADAY;
+          url += '&interval=';
+          url += INTERVAL_60_MINUTES;
+          key = TIME_SERIES_60_MINUTES;
+          break;
+        case INTERVAL_30_MINUTES:
+          url += TIME_SERIES_INTRADAY;
+          url += '&interval=';
+          url += INTERVAL_30_MINUTES;
+          key = TIME_SERIES_30_MINUTES;
+          break;
+        case INTERVAL_15_MINUTES:
+          url += TIME_SERIES_INTRADAY;
+          url += '&interval=';
+          url += INTERVAL_15_MINUTES;
+          key = TIME_SERIES_15_MINUTES;
+          break;
+        case INTERVAL_5_MINUTES:
+          url += TIME_SERIES_INTRADAY;
+          url += '&interval=';
+          url += INTERVAL_5_MINUTES;
+          key = TIME_SERIES_5_MINUTES;
+          break;
         case INTERVAL_1_MINUTE:
         default:
           url += TIME_SERIES_INTRADAY;
