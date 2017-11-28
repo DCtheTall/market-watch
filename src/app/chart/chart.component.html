@@ -1,16 +1,21 @@
 <div class="chart">
-  <span class="heading">Stocks</span>
   <div class="chart-controller">
-    <div class="label">
-      Zoom
+    <div class="heading">
+      Stocks
     </div>
-    <div>
-      <button
-        *ngFor="let interval of INTERVALS"
-        (click)="setChartInterval(interval)"
-      >
-        {{interval}}
-      </button>
+    <div class="panel">
+      <div class="label">
+        Zoom
+      </div>
+      <div>
+        <button
+          class="interval-btn"
+          *ngFor="let interval of INTERVALS"
+          (click)="setChartInterval(interval)"
+        >
+          {{interval}}
+        </button>
+      </div>
     </div>
   </div>
   <div class="chart-container" id="chart-container">

@@ -96,7 +96,7 @@ async function getActiveCompanies(req, res) {
     res.status(200).json(companies);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Failed to get active companies');
+    res.status(500).json('Failed to get active companies');
   }
 }
 

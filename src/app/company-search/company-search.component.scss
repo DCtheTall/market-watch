@@ -33,4 +33,40 @@ company-search {
     outline: none;
     width: unquote('calc(100% - 10px)');
   }
+
+  .search-results {
+    display: flex;
+
+    .search-result {
+      align-items: center;
+      background: $white;
+      border: solid 1px $light-grey;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      margin: 0 0 5px;
+      padding: 5px;
+      width: unquote('calc(100% - 5px)');
+
+      span {
+        text-align: left;
+      }
+
+      .symbol {
+        color: $charcoal;
+        font-size: 16px;
+      }
+
+      .name {
+        color: $grey;
+        font-size: 12px;
+      }
+
+      .icon {
+        color: $green;
+        font-size: 16px;
+        margin-right: 5px;
+      }
+    }
+  }
 }

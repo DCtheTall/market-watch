@@ -11,14 +11,60 @@ chart {
 }
 
 .chart {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
 }
 
+.chart-controller {
+  border-bottom: solid 2px $background;
+  padding: 5px 5px 8px;
+
+  .heading {
+    color: $light-grey;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .panel {
+    align-items: center;
+    display: flex;
+
+    div {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .label {
+      color: $grey;
+      font-size: 12px;
+      margin-right: 10px;
+    }
+
+    .interval-btn {
+      background: $charcoal;
+      border: solid 1px $light-grey;
+      border-radius: 3px;
+      color: $light-grey;
+      font-size: 12px;
+      margin-right: 5px;
+
+      @media #{$mobile} {
+        margin-bottom: 3px;
+      }
+    }
+  }
+}
+
 .chart-container {
-  border-bottom: solid 3px $background;
+  border-bottom: solid 2px $background;
   height: 100%;
   width: 100%;
+
+  @media #{$mobile} {
+    height: 300px;
+  }
 }
 
 .chart-svg {
