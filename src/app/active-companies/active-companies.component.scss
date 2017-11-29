@@ -1,5 +1,61 @@
 @import '../styles/base';
 
 .active-companies-container {
-  height: 200px;
+  border-bottom: solid 3px $charcoal;
+  border-top: solid 3px $charcoal;
+  display: flex;
+  flex-wrap: wrap;
+  height: 160px;
+
+  @media #{$mobile} {
+    display: block;
+    height: auto;
+  }
+
+  .active-company {
+    align-items: flex-start;
+    background: $white;
+    border: solid 3px $light-grey;
+    cursor: pointer;
+    display: flex;
+    height: unquote('calc(50% - 7px)');
+    justify-content: space-between;
+    margin: 2px 5px;
+    padding: 5px;
+    position: relative;
+    width: unquote('calc(20% - 10px)');
+
+    @media #{$mobile} {
+      height: 60px;
+      width: unquote('calc(100% - 10px)');
+    }
+
+    span {
+      text-align: left;
+    }
+
+    .symbol {
+      color: $charcoal;
+      font-size: 16px;
+    }
+
+    .name {
+      color: $grey;
+      font-size: 12px;
+    }
+
+    .icon {
+      color: $grey;
+      font-size: 24px;
+      position: absolute;
+      right: 5px;
+      top: 0;
+    }
+
+    &:hover {
+      .icon {
+        color: $red;
+      }
+    }
+  }
 }

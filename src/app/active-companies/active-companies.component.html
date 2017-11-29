@@ -2,14 +2,19 @@
   <button
     *ngFor="let company of companies$ | async"
     (click)="removeCompany(company)"
+    class="active-company"
     [ngStyle]="{ 'border-color': company.color }"
   >
     <span>
-      {{company.symbol}}
+      <span class="symbol">
+        {{company.symbol}}
+      </span>
       <br>
-      {{company.name}}
+      <span class="name">
+        {{company.name}}
+      </span>
     </span>
-    <span>
+    <span class="icon">
       &times;
     </span>
   </button>

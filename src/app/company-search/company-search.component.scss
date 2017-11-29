@@ -35,12 +35,12 @@ company-search {
   }
 
   .search-results {
-    display: flex;
+    overflow-y: auto;
 
     .search-result {
       align-items: center;
       background: $white;
-      border: solid 1px $light-grey;
+      border: solid 2px $light-grey;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
