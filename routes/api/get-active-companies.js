@@ -1,18 +1,9 @@
 const axios = require('axios');
 const {
-  INTERVAL_5_MINUTES,
-  INTERVAL_15_MINUTES,
-  INTERVAL_30_MINUTES,
-  INTERVAL_60_MINUTES,
   INTERVAL_DAILY,
   HIGH_KEY,
   LOW_KEY,
   CLOSE_KEY,
-  TIME_SERIES_INTRADAY,
-  TIME_SERIES_5_MINUTES,
-  TIME_SERIES_15_MINUTES,
-  TIME_SERIES_30_MINUTES,
-  TIME_SERIES_60_MINUTES,
   TIME_SERIES_DAILY,
   TIME_SERIES_DAILY_KEY,
 } = require('../constants');
@@ -29,41 +20,10 @@ async function getActiveCompanies(req, res) {
     let companies = await Company.find({ active: true })
                                  .sort({ symbol: 1 });
     companies = await Promise.map(companies, async (company) => {
+      const key = TIME_SERIES_DAILY_KEY;
+
       let url = 'https://www.alphavantage.co/query?function=';
-      let key = '';
-
-      switch(req.query.interval) {
-        case INTERVAL_DAILY:
-          url += TIME_SERIES_DAILY;
-          key = TIME_SERIES_DAILY_KEY;
-          break;
-        case INTERVAL_60_MINUTES:
-          url += TIME_SERIES_INTRADAY;
-          url += '&interval=';
-          url += INTERVAL_60_MINUTES;
-          key = TIME_SERIES_60_MINUTES;
-          break;
-        case INTERVAL_30_MINUTES:
-          url += TIME_SERIES_INTRADAY;
-          url += '&interval=';
-          url += INTERVAL_30_MINUTES;
-          key = TIME_SERIES_30_MINUTES;
-          break;
-        case INTERVAL_15_MINUTES:
-          url += TIME_SERIES_INTRADAY;
-          url += '&interval=';
-          url += INTERVAL_15_MINUTES;
-          key = TIME_SERIES_15_MINUTES;
-          break;
-        case INTERVAL_5_MINUTES:
-        default:
-          url += TIME_SERIES_INTRADAY;
-          url += '&interval=';
-          url += INTERVAL_5_MINUTES;
-          key = TIME_SERIES_5_MINUTES;
-          break;
-      }
-
+      url += TIME_SERIES_DAILY;
       url += `&symbol=${company.symbol}`;
       url += `&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
 

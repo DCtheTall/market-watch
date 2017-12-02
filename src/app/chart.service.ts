@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import * as d3 from 'd3';
 
@@ -10,47 +11,38 @@ import { Company } from './company';
 
 @Injectable()
 export class ChartService {
-  private chartIntervalObserver: Observer<string>;
+  private chartData: BehaviorSubject<ChartNode[][]>;
   private colors: string[];
   private companies: Observable<Company[]>;
 
-  public chartData: Observable<ChartNode[][]>
   public chartDataObserver: Observer<ChartNode[][]>;
-  public chartInterval: Observable<string>;
   public companiesObserver: Observer<Company[]>;
 
   constructor() {
     this.companies = Observable.create((observer: Observer<Company[]>) => {
       this.companiesObserver = observer;
     });
-    this.companies.subscribe(this.updateCompanies.bind(this));
-
-    this.chartData = Observable.create((observer: Observer<ChartNode[][]>) => {
-      this.chartDataObserver = observer;
-    });
-    this.chartData.subscribe(this.updateChart.bind(this));
-
-    this.chartInterval = Observable.create((observer: Observer<string>) => {
-      this.chartIntervalObserver = observer;
-    });
+    this.companies.subscribe(this.onCompaniesUpdate.bind(this));
   }
 
-  private updateCompanies(data: Company[]): void {
+  private onCompaniesUpdate(data: Company[]): void {
     const chartData: ChartNode[][] = [];
     this.colors = [];
     data.forEach((company) => {
       chartData.push(company.data);
       this.colors.push(company.color);
     });
-    this.chartDataObserver.next(chartData);
+    if (!this.chartData) {
+      this.chartData = new BehaviorSubject(chartData);
+      this.chartData.subscribe(this.updateChart.bind(this));
+    } else {
+      this.chartData.next(chartData);
+    }
   }
 
-
-  public updateChartInterval(interval: string): void {
-    this.chartIntervalObserver.next(interval);
-  }
-
-  private updateChart(data: ChartNode[][]): void {
+  public updateChart(): void {
+    if (!this.chartData) return;
+    const data: ChartNode[][] = this.chartData.getValue();
     const svg = d3.select<HTMLElement, {}>('#chart-svg');
     svg.selectAll('*').remove();
     const margin = {

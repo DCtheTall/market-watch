@@ -20,7 +20,7 @@ export class CompanySearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.companies$ = this.companyService.pipeSearchQuery();
+    this.companies$ = this.companyService.searchedCompanies;
   }
 
   addCompany(company: Company): void {

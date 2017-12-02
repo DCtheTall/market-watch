@@ -2,8 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { INTERVALS } from '../constants';
-
 import { ChartService } from '../chart.service';
 
 import './chart.component.scss';
@@ -14,14 +12,10 @@ import './chart.component.scss';
   encapsulation: ViewEncapsulation.None,
 })
 export class ChartComponent implements OnInit {
-  private INTERVALS = INTERVALS;
-
   constructor(
     private chartService: ChartService
   ) {}
-  ngOnInit() {}
-
-  private setChartInterval(interval: string): void {
-    this.chartService.updateChartInterval(interval);
+  ngOnInit() {
+    setInterval(this.chartService.updateChart.bind(this.chartService), 1000);
   }
 }

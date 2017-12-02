@@ -26,35 +26,6 @@ chart {
     font-size: 18px;
     margin-bottom: 10px;
   }
-
-  .panel {
-    align-items: center;
-    display: flex;
-
-    div {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .label {
-      color: $grey;
-      font-size: 12px;
-      margin-right: 10px;
-    }
-
-    .interval-btn {
-      background: $charcoal;
-      border: solid 1px $light-grey;
-      border-radius: 3px;
-      color: $light-grey;
-      font-size: 12px;
-      margin-right: 5px;
-
-      @media #{$mobile} {
-        margin-bottom: 3px;
-      }
-    }
-  }
 }
 
 .chart-container {
