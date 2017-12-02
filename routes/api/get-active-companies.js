@@ -28,8 +28,15 @@ async function getActiveCompanies(req, res) {
       url += `&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
 
       let { data } = await axios.get(url);
+      let dataKeys;
       data = data[key];
-      data = Object.keys(data).map((date) => {
+      try {
+        dataKeys = Object.keys(data);
+      } catch (err) {
+        console.log(err, company);
+        return { ...company._doc, data: [] };
+      }
+      data = dataKeys.map((date) => {
         const node = data[date];
         return {
           date: (new Date(date)).toISOString(),

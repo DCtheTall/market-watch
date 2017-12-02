@@ -6,6 +6,7 @@
   display: flex;
   flex-wrap: wrap;
   height: 160px;
+  padding: 3px;
 
   @media #{$mobile} {
     display: block;
@@ -20,10 +21,10 @@
     display: flex;
     height: unquote('calc(50% - 7px)');
     justify-content: space-between;
-    margin: 2px 5px;
+    margin: 2px;
     padding: 5px;
     position: relative;
-    width: unquote('calc(20% - 10px)');
+    width: unquote('calc(20% - 4px)');
 
     @media #{$mobile} {
       height: 60px;
