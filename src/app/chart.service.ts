@@ -5,7 +5,6 @@ import { Observer } from 'rxjs/Observer';
 
 import * as d3 from 'd3';
 
-import { INTERVAL_1_MINUTE } from './constants';
 import { ChartNode } from './chart-node';
 import { Company } from './company';
 

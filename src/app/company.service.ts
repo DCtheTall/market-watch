@@ -11,7 +11,7 @@ import * as d3 from 'd3';
 
 import {
   MAXIMUM_ALLOWED_ACTIVE_COMPANIES,
-  INTERVAL_1_MINUTE,
+  INTERVAL_5_MINUTES,
 } from './constants';
 
 import { SocketService } from './socket.service';
@@ -24,7 +24,7 @@ export class CompanyService {
   private activeCompanyObserver: Observer<Company[]>;
   private searchQuerySubject = new Subject<string>();
   private searchQuery = '';
-  private chartInterval = INTERVAL_1_MINUTE;
+  private chartInterval = INTERVAL_5_MINUTES;
 
   public activeCompanies: Observable<Company[]>;
   public numberOfActiveCompanies = 0;

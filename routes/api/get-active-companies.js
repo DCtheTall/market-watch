@@ -1,6 +1,5 @@
 const axios = require('axios');
 const {
-  INTERVAL_1_MINUTE,
   INTERVAL_5_MINUTES,
   INTERVAL_15_MINUTES,
   INTERVAL_30_MINUTES,
@@ -10,7 +9,6 @@ const {
   LOW_KEY,
   CLOSE_KEY,
   TIME_SERIES_INTRADAY,
-  TIME_SERIES_1_MINUTE,
   TIME_SERIES_5_MINUTES,
   TIME_SERIES_15_MINUTES,
   TIME_SERIES_30_MINUTES,
@@ -58,17 +56,12 @@ async function getActiveCompanies(req, res) {
           key = TIME_SERIES_15_MINUTES;
           break;
         case INTERVAL_5_MINUTES:
+        default:
           url += TIME_SERIES_INTRADAY;
           url += '&interval=';
           url += INTERVAL_5_MINUTES;
           key = TIME_SERIES_5_MINUTES;
           break;
-        case INTERVAL_1_MINUTE:
-        default:
-          url += TIME_SERIES_INTRADAY;
-          url += '&interval=';
-          url += INTERVAL_1_MINUTE;
-          key = TIME_SERIES_1_MINUTE;
       }
 
       url += `&symbol=${company.symbol}`;
