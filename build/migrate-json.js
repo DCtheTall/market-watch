@@ -18,6 +18,7 @@ const Promise = require('bluebird');
       });
       await company.save();
     });
+    process.exit(0);
   } catch (err) {
     console.log(err);
   }

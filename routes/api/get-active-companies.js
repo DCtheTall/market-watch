@@ -1,4 +1,3 @@
-const axios = require('axios');
 const {
   INTERVAL_DAILY,
   HIGH_KEY,
@@ -7,6 +6,7 @@ const {
   TIME_SERIES_DAILY,
   TIME_SERIES_DAILY_KEY,
 } = require('../constants');
+const axios = require('axios');
 
 /**
  * getActiveCompanies
@@ -15,27 +15,18 @@ const {
  * @returns {undefined}
  */
 async function getActiveCompanies(req, res) {
-  const { Company } = models;
   try {
+    const { Company } = models;
     let companies = await Company.find({ active: true })
                                  .sort({ symbol: 1 });
     companies = await Promise.map(companies, async (company) => {
-      const key = TIME_SERIES_DAILY_KEY;
-
       let url = 'https://www.alphavantage.co/query?function=';
       url += TIME_SERIES_DAILY;
       url += `&symbol=${company.symbol}`;
       url += `&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
-
       let { data } = await axios.get(url);
-      let dataKeys;
-      data = data[key];
-      try {
-        dataKeys = Object.keys(data);
-      } catch (err) {
-        console.log(err, company);
-        return { ...company._doc, data: [] };
-      }
+      data = data[TIME_SERIES_DAILY_KEY];
+      let dataKeys = Object.keys(data);
       data = dataKeys.map((date) => {
         const node = data[date];
         return {
@@ -45,7 +36,6 @@ async function getActiveCompanies(req, res) {
           close: +node[CLOSE_KEY],
         };
       }).sort((a, b) => new Date(a.date) - new Date(b.date));
-
       return { ...company._doc, data };
     });
     companies = companies.sort((a, b) => {
@@ -56,7 +46,7 @@ async function getActiveCompanies(req, res) {
     res.status(200).json(companies);
   } catch (err) {
     console.log(err);
-    res.status(500).json('Failed to get active companies');
+    res.status(400).json('Failed to get active companies');
   }
 }
 

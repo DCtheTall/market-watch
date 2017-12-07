@@ -9,9 +9,7 @@ import { debounceTime, catchError, switchMap, map } from 'rxjs/operators';
 
 import * as d3 from 'd3';
 
-import {
-  MAXIMUM_ALLOWED_ACTIVE_COMPANIES,
-} from './constants';
+import { MAXIMUM_ALLOWED_ACTIVE_COMPANIES } from './constants';
 
 import { SocketService } from './socket.service';
 import { ChartService } from './chart.service';
@@ -23,7 +21,6 @@ export class CompanyService {
   private activeCompanyObserver: Observer<Company[]>;
   private searchQuerySubject = new Subject<string>();
   private searchQuery = '';
-  private searchedCompaniesObserver: Observer<Company[]>;
 
   public activeCompanies: Observable<Company[]>;
   public numberOfActiveCompanies = 0;
@@ -40,15 +37,15 @@ export class CompanyService {
     });
     this.activeCompanies.subscribe();
 
-    this.searchedCompanies = Observable.create((observer: Observer<Company[]>) => {
-      this.searchedCompaniesObserver = observer;
-    });
-    this.searchedCompanies.subscribe(() => {
-      this.chartService.updateChart();
-    });
-
     this.searchQuerySubject.subscribe((query: string) => {
       this.searchCompanies(query);
+    });
+    this.searchedCompanies = this.searchQuerySubject.pipe(
+      debounceTime(500),
+      switchMap((query: string) => this.searchCompanies(query))
+    );
+    this.searchedCompanies.subscribe(() => {
+      this.chartService.updateChart();
     });
 
     this.socketService.getMessages()
@@ -92,21 +89,17 @@ export class CompanyService {
     this.searchQuerySubject.next(this.searchQuery);
   }
 
-  private searchCompanies(_query: string): void {
+  private searchCompanies(_query: string): Observable<Company[]> {
     const query = _query.trim();
     if (!query) {
-      this.searchedCompaniesObserver.next([]);
-      return;
+      return of([]);
     }
     this.searchQuery = query;
     const url: string = `/api/companies/search/?q=${query.trim()}`;
-    this.http.get<Company[]>(url)
-             .pipe(
-               catchError(this.handleError('Searching companies', []))
-             )
-             .subscribe((data: Company[]) => {
-               this.searchedCompaniesObserver.next(data);
-             });
+    return this.http.get<Company[]>(url)
+                    .pipe(
+                      catchError(this.handleError('Searching companies', []))
+                    );
   }
 
   public updateSearchQuery(query: string): void {

@@ -15,7 +15,5 @@ export class ChartComponent implements OnInit {
   constructor(
     private chartService: ChartService
   ) {}
-  ngOnInit() {
-    setInterval(this.chartService.updateChart.bind(this.chartService), 1000);
-  }
+  ngOnInit() {}
 }
