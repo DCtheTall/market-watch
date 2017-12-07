@@ -15,6 +15,8 @@ const Promise = require('bluebird');
         name,
         symbol,
         active: false,
+        lastUpdated: new Date(),
+        data: [],
       });
       await company.save();
     });
