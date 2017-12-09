@@ -15,6 +15,7 @@ async function searchCompanies(req, res) {
     let companies = await Company.find({
       $or: [{ name: regex }, { symbol: regex }],
       active: false,
+      searchable: true,
     });
     companies = companies.map(company => ({
       company,
@@ -24,8 +25,8 @@ async function searchCompanies(req, res) {
       ),
     }))
     .sort((a, b) => b.searchRelevancy - a.searchRelevancy)
-    .map(({ company }) => company)
-    .slice(0, 10);
+    .slice(0, 10)
+    .map(({ company }) => company);
     res.status(200).json(companies);
   } catch (err) {
     console.log(err);
