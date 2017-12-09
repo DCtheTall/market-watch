@@ -23,5 +23,5 @@ const job = new CronJob({
   timeZone: 'America/New_York',
 });
 
-if (require.main === module) updateStockData();
+if (require.main === module) job.start();
 else module.exports = job;
