@@ -17,15 +17,12 @@ chart {
   width: 100%;
 }
 
-.chart-controller {
-  border-bottom: solid 2px $background;
+.chart-heading {
+  color: $light-grey;
+  font-size: 18px;
+  margin-bottom: 10px;
   padding: 5px 5px 8px;
-
-  .heading {
-    color: $light-grey;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+  text-align: center;
 }
 
 .chart-container {
@@ -41,4 +38,22 @@ chart {
 .chart-svg {
   height: 100%;
   width: 100%;
+
+  .axis-line {
+    stroke: $light-grey;
+  }
+
+  .axis-text {
+    fill: $light-grey;
+    font-size: 9px;
+  }
+
+  .scale-label-line {
+    stroke: $light-grey;
+  }
+
+  .scale-label-text {
+    fill: $light-grey;
+    font-size: 10px;
+  }
 }

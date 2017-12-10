@@ -37,9 +37,6 @@ export class CompanyService {
     });
     this.activeCompanies.subscribe();
 
-    this.searchQuerySubject.subscribe((query: string) => {
-      this.searchCompanies(query);
-    });
     this.searchedCompanies = this.searchQuerySubject.pipe(
       debounceTime(500),
       switchMap((query: string) => this.searchCompanies(query))
