@@ -1,0 +1,30 @@
+@import '../styles/base';
+
+.error-bar {
+  align-items: center;
+  background: $red;
+  display: flex;
+  height: 40px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  div {
+    color: $light-red;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+  }
+
+  button {
+    background: none;
+    border: 0;
+    color: $light-red;
+    cursor: pointer;
+    margin-right: 10px;
+    outline: none;
+    padding: 0;
+    font-size: 24px;
+  }
+}

@@ -7,6 +7,7 @@ const Promise = require('bluebird');
   try {
     console.log('Migrating JSON data to Mongo...');
     await connectToMongo();
+    await Company.remove({});
     await Promise.each(companiesJson, async (companyData) => {
       const {
         Symbol: symbol,

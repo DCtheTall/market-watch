@@ -1,4 +1,5 @@
 <div class="app-container">
+  <error-bar *ngIf="errorService.error"></error-bar>
   <company-search
     *ngIf="companyService.numberOfActiveCompanies < MAXIMUM_ALLOWED_ACTIVE_COMPANIES"
   ></company-search>

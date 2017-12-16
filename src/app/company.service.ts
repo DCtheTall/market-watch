@@ -13,6 +13,7 @@ import { MAXIMUM_ALLOWED_ACTIVE_COMPANIES } from './constants';
 
 import { SocketService } from './socket.service';
 import { ChartService } from './chart.service';
+import { ErrorService } from './error.service';
 
 import { Company } from './company';
 
@@ -29,7 +30,8 @@ export class CompanyService {
   constructor(
     private http: HttpClient,
     private socketService: SocketService,
-    private chartService: ChartService
+    private chartService: ChartService,
+    private errorService: ErrorService
   ) {
     this.activeCompanies = Observable.create((observer: Observer<Company[]>) => {
       this.activeCompanyObserver = observer;
@@ -49,9 +51,9 @@ export class CompanyService {
                       .subscribe(this.receiveSocketMessage.bind(this));
   }
 
-  private handleError<T>(operation: string, result?: T) {
+  private handleError<T>(message: string, result?: T) {
     return (err: Error): Observable<T> => {
-      console.log(`${operation} failed: ${err.toString()}`);
+      this.errorService.addError(message);
       return of(result as T);
     };
   }
@@ -59,7 +61,7 @@ export class CompanyService {
   public getActiveCompanies(): void {
     this.http.get<Company[]>(`/api/companies/active`)
             .pipe(
-              catchError(this.handleError('Getting active companies', []))
+              catchError(this.handleError('Failed to get companies\' stock data', []))
             )
             .subscribe((data: Company[]) => {
               const getCompanyColor = <d3.ScaleLinear<number, number>>(
@@ -86,8 +88,7 @@ export class CompanyService {
     this.searchQuerySubject.next(this.searchQuery);
   }
 
-  private searchCompanies(_query: string): Observable<Company[]> {
-    const query = _query.trim();
+  private searchCompanies(query: string): Observable<Company[]> {
     if (!query) {
       return of([]);
     }
@@ -95,18 +96,18 @@ export class CompanyService {
     const url: string = `/api/companies/search/?q=${query.trim()}`;
     return this.http.get<Company[]>(url)
                     .pipe(
-                      catchError(this.handleError('Searching companies', []))
+                      catchError(this.handleError('Failed to search companies', []))
                     );
   }
 
   public updateSearchQuery(query: string): void {
-    this.searchQuerySubject.next(query);
+    this.searchQuerySubject.next(query.trim());
   }
 
   public toggleCompany(company: Company): void {
     this.http.put<Company>(`/api/company/${company._id}/active`, company)
              .pipe(
-                catchError(this.handleError('Toggling a company actice', company))
+                catchError(this.handleError('Failed to toggle displaying a company', company))
               )
               .subscribe();
   }
