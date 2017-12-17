@@ -48,6 +48,10 @@ company-search {
       padding: 5px;
       width: unquote('calc(100% - 5px)');
 
+      @media #{$mobile} {
+        width: 100%;
+      }
+
       span {
         text-align: left;
       }

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { of } from 'rxjs/observable/of';
 import { debounceTime, catchError, switchMap, map } from 'rxjs/operators';
 
@@ -20,8 +20,7 @@ import { Company } from './company';
 @Injectable()
 export class CompanyService {
   private activeCompanyObserver: Observer<Company[]>;
-  private searchQuerySubject = new Subject<string>();
-  private searchQuery = '';
+  private searchQuerySubject = new BehaviorSubject<string>('');
 
   public activeCompanies: Observable<Company[]>;
   public numberOfActiveCompanies = 0;
@@ -75,7 +74,6 @@ export class CompanyService {
               });
               this.numberOfActiveCompanies = data.length;
               if (data.length === MAXIMUM_ALLOWED_ACTIVE_COMPANIES) {
-                this.searchQuery = '';
                 this.searchQuerySubject.next('');
               }
               this.activeCompanyObserver.next(companies);
@@ -85,14 +83,13 @@ export class CompanyService {
 
   private receiveSocketMessage(): void {
     this.getActiveCompanies();
-    this.searchQuerySubject.next(this.searchQuery);
+    this.searchQuerySubject.next(this.searchQuerySubject.getValue());
   }
 
   private searchCompanies(query: string): Observable<Company[]> {
     if (!query) {
       return of([]);
     }
-    this.searchQuery = query;
     const url: string = `/api/companies/search/?q=${query.trim()}`;
     return this.http.get<Company[]>(url)
                     .pipe(

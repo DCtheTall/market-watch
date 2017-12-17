@@ -4,10 +4,16 @@
   </div>
   <div class="chart-container" id="chart-container">
     <svg
-      *ngIf="chartData.length > 0"
+      *ngIf="(chartData)?.length > 0"
       class="chart-svg"
       #chartSvg
       id="chart-svg"
     ></svg>
+    <div
+      *ngIf="(chartData)?.length === 0"
+      class="no-companies"
+    >
+      Search some companies and view their data!
+    </div>
   </div>
 </div>

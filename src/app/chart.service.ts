@@ -11,9 +11,9 @@ import { Company } from './company';
 export class ChartService {
   private companies: Observable<Company[]>;
   private onChartDataCreate: () => void;
+  private chartDataObserver: Observer<ChartNode[][]>;
 
   public chartData: BehaviorSubject<ChartNode[][]>;
-  public chartDataObserver: Observer<ChartNode[][]>;
   public companiesObserver: Observer<Company[]>;
   public colors: string[];
 

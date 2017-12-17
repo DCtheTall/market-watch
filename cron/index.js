@@ -17,7 +17,7 @@ async function updateStockData() {
 }
 
 const job = new CronJob({
-  cronTime: '0 0 0 * * *', // every day
+  cronTime: '0 0 0 * * *', // midnight every day
   onTick: updateStockData,
   start: false,
   timeZone: 'America/New_York',
