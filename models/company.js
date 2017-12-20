@@ -30,7 +30,7 @@ Company.methods.getStockData = async function getStockData() {
     url += `&symbol=${this.symbol}`;
     url += `&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`;
     let { data } = await axios.get(url);
-    console.log(data);
+    console.log('Alpha Vantage response:', data);
     data = data[TIME_SERIES_DAILY_KEY];
     let dataKeys = Object.keys(data);
     data = dataKeys.map((date) => {

@@ -28,10 +28,11 @@ const Promise = require('bluebird');
       '\nGetting companies\' stock data...'
     );
     const companies = await Company.find({});
+    if (process.argv[2] === '--no-sync') process.exit(0);
     await Promise.map(
       companies,
-      company => company.getStockData().then(() => Promise.delay(5000)),
-      { concurrency: 6 }
+      company => company.getStockData().then(() => Promise.delay(6000)),
+      { concurrency: 4 }
     );
     console.log('Finished getting stock data!\nBuild successful!');
     process.exit(0);

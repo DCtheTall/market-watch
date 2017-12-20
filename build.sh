@@ -1,3 +1,3 @@
-node ./build/download-csv.js;
-node ./build/convert-csv-to-json.js;
-node ./build/migrate-json.js;
+node ./migration/download-csv.js;
+node ./migration/convert-csv-to-json.js;
+node ./migration/migrate-json.js $1;
