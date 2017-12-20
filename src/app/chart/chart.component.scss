@@ -31,10 +31,30 @@ chart {
 .chart-container {
   border-bottom: solid 2px $background;
   height: 100%;
+  position: relative;
   width: 100%;
 
   @media #{$mobile} {
     height: 300px;
+  }
+}
+
+.tool-tip {
+  background: $charcoal;
+  border: 1px solid fade-out($light-grey, .5);
+  box-shadow: 2px 2px 1px fade-out($black, .5);
+  color: $light-grey;
+  font-size: 12px;
+  min-width: 110px;
+  padding: 10px;
+  position: absolute;
+
+  strong {
+    font-size: 14px;
+  }
+
+  &:not(.visible) {
+    display: none;
   }
 }
 

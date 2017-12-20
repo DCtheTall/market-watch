@@ -9,6 +9,23 @@ import { ChartNode } from '../chart-node';
 
 import './chart.component.scss';
 
+function onNodeMouseEnter(symbol: string, color: string, node: ChartNode): void {
+  const formatDate = d3.timeFormat('%Y-%m-%d');
+  const tip = document.getElementById('tool-tip');
+  tip.innerHTML = `<strong style="color: ${color};">${symbol}</strong> ${formatDate(new Date(node.date))}<br>`;
+  tip.innerHTML += `high: ${node.high}<br>`;
+  tip.innerHTML += `low: ${node.low}<br>`;
+  tip.innerHTML += `close: ${node.close}`;
+  tip.style.left = `${d3.event.pageX}px`;
+  tip.style.top = `${d3.event.pageY}px`;
+  d3.select(tip).attr('class', 'tool-tip visible');
+}
+
+function onNodeMouseLeave() {
+  const tip = document.getElementById('tool-tip');
+  d3.select(tip).attr('class', 'tool-tip');
+}
+
 @Component({
   selector: 'chart',
   templateUrl: './chart.component.html',
@@ -45,7 +62,6 @@ export class ChartComponent implements OnInit {
     const container = document.getElementById('chart-container');
     const chartWidth = container.offsetWidth - margin.left - margin.right;
     const chartHeight = container.offsetHeight - margin.top - margin.bottom;
-    const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%SZ');
     const maximumValues = data.map((chartNodes: ChartNode[]) => {
       const companyHighValues = chartNodes.map(({ high }) => high);
       return Math.max.apply(null, companyHighValues);
@@ -93,7 +109,7 @@ export class ChartComponent implements OnInit {
     // Line graph
 
     const chartGroup = svg.append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+                          .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     data.forEach((chartNodes: ChartNode[], i: number) => {
       const line = d3.line<ChartNode>()
@@ -112,6 +128,20 @@ export class ChartComponent implements OnInit {
               .attr('stroke-linecap', 'round')
               .attr('stroke-width', 1.5)
               .attr('d', line);
+
+      const symbol = this.chartService.symbols[i];
+      const tooltipPoints = chartGroup.append('g');
+      const points = tooltipPoints.selectAll('g')
+                               .data(filteredChartNodes)
+                               .enter()
+                               .append('g');
+      points.attr('transform', (d: ChartNode) => `translate(${getXCoord(new Date(d.date))}, ${getYCoord(d.close)})`)
+            .append('circle')
+            .attr('r', 6)
+            .attr('fill', strokeColor)
+            .attr('opacity', 0.1);
+      points.on('mouseenter', onNodeMouseEnter.bind(null, symbol, strokeColor));
+      points.on('mouseleave', onNodeMouseLeave);
     });
 
     // My own bottom axis, don't like d3's axisBottom

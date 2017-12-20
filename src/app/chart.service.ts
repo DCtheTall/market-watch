@@ -15,7 +15,8 @@ export class ChartService {
 
   public chartData: BehaviorSubject<ChartNode[][]>;
   public companiesObserver: Observer<Company[]>;
-  public colors: string[];
+  public colors: string[] = [];
+  public symbols: string[] = [];
 
   constructor() {
     this.companies = Observable.create((observer: Observer<Company[]>) => {
@@ -27,10 +28,10 @@ export class ChartService {
 
   private onCompaniesUpdate(data: Company[]): void {
     const chartData: ChartNode[][] = [];
-    this.colors = [];
     data.forEach((company) => {
       chartData.push(company.data);
       this.colors.push(company.color);
+      this.symbols.push(company.symbol);
     });
     if (!this.chartData) {
       this.chartData = new BehaviorSubject(chartData);
