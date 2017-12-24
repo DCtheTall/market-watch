@@ -10,10 +10,9 @@ import { Company } from './company';
 @Injectable()
 export class ChartService {
   private companies: Observable<Company[]>;
-  private onChartDataCreate: () => void;
   private chartDataObserver: Observer<ChartNode[][]>;
 
-  public chartData: BehaviorSubject<ChartNode[][]>;
+  public chartData: BehaviorSubject<ChartNode[][]> = new BehaviorSubject([]);
   public companiesObserver: Observer<Company[]>;
   public colors: string[] = [];
   public symbols: string[] = [];
@@ -33,16 +32,7 @@ export class ChartService {
       this.colors.push(company.color);
       this.symbols.push(company.symbol);
     });
-    if (!this.chartData) {
-      this.chartData = new BehaviorSubject(chartData);
-      this.onChartDataCreate();
-    } else {
-      this.chartData.next(chartData);
-    }
-  }
-
-  public setOnChartDataCreate(func: () => void): void {
-    this.onChartDataCreate = func;
+    this.chartData.next(chartData);
   }
 
   public updateChart(): void {

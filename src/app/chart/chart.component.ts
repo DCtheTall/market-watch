@@ -16,12 +16,12 @@ function onNodeMouseEnter(symbol: string, color: string, node: ChartNode): void 
   tip.innerHTML += `high: ${node.high}<br>`;
   tip.innerHTML += `low: ${node.low}<br>`;
   tip.innerHTML += `close: ${node.close}`;
-  tip.style.left = `${d3.event.pageX}px`;
-  tip.style.top = `${d3.event.pageY}px`;
+  tip.style.left = `${d3.event.layerX + 10}px`;
+  tip.style.top = `${d3.event.layerY + 10}px`;
   d3.select(tip).attr('class', 'tool-tip visible');
 }
 
-function onNodeMouseLeave() {
+function onNodeMouseLeave(): void {
   const tip = document.getElementById('tool-tip');
   d3.select(tip).attr('class', 'tool-tip');
 }
@@ -39,11 +39,9 @@ export class ChartComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.chartService.setOnChartDataCreate(() => {
-      this.chartService.chartData.subscribe(() => {
-        this.chartData = this.chartService.chartData.getValue();
-        this.updateChart();
-      });
+    this.chartService.chartData.subscribe((data: ChartNode[][]) => {
+      this.chartData = data;
+      this.updateChart();
     });
   }
 
@@ -139,7 +137,7 @@ export class ChartComponent implements OnInit {
             .append('circle')
             .attr('r', 6)
             .attr('fill', strokeColor)
-            .attr('opacity', 0.1);
+            .attr('opacity', 0.05);
       points.on('mouseenter', onNodeMouseEnter.bind(null, symbol, strokeColor));
       points.on('mouseleave', onNodeMouseLeave);
     });

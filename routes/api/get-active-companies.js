@@ -9,6 +9,7 @@ async function getActiveCompanies(req, res) {
     const { Company } = models;
     const companies = await Company.find({ active: true })
                                    .sort({ symbol: 1 });
+    res.status(200).json(companies);
   } catch (err) {
     console.log(err);
     res.status(400).json('Failed to get active companies');

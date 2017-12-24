@@ -11,4 +11,5 @@ data/companies.json
 # Webpack bundles
 public/*.js
 public/*.css
+public/*.map
 public/index.html
