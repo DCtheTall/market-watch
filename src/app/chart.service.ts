@@ -27,6 +27,8 @@ export class ChartService {
 
   private onCompaniesUpdate(data: Company[]): void {
     const chartData: ChartNode[][] = [];
+    this.colors = [];
+    this.symbols = [];
     data.forEach((company) => {
       chartData.push(company.data);
       this.colors.push(company.color);
