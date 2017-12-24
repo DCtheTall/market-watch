@@ -21,10 +21,12 @@ async function updateStockData() {
     const now = Date.now();
     const dt = (now - then) / 1000;
     console.log(`Sync took ${Math.floor(dt / 60)}m ${Math.floor(dt % 60)}s`);
-    await sendEmailToMyself({
-      subject: 'Alpha Vantage Sync',
-      text: `Sync took ${Math.floor(dt / 60)}m ${Math.floor(dt % 60)}s`,
-    });
+    if ((new Date()).getHours() > 8 && (new Date()).getHours() < 20) {
+      await sendEmailToMyself({
+        subject: 'Alpha Vantage Sync',
+        text: `Sync took ${Math.floor(dt / 60)}m ${Math.floor(dt % 60)}s`,
+      });
+    }
     if (require.main === module) process.exit(0);
   } catch (err) {
     console.log(err);
