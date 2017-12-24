@@ -1,6 +1,6 @@
 # Market Watch
 ---
-To build run `sh build.sh`
+To migrate data, run `sh migrate.sh`
 The data migration syncs in data from Alpha Vantage, which can take a while since API requests are rate limited.
 Run with the optional argument `--no-sync` to skip the API sync.
 

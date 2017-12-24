@@ -27,8 +27,8 @@ const Promise = require('bluebird');
       'Finished migrating the data to Mongo!',
       '\nGetting companies\' stock data...'
     );
-    const companies = await Company.find({});
     if (process.argv[2] === '--no-sync') process.exit(0);
+    const companies = await Company.find({});
     await Promise.map(
       companies,
       company => company.getStockData().then(() => Promise.delay(6000)),
