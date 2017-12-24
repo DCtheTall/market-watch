@@ -9,11 +9,9 @@ module.exports = {
     vendor: `${__dirname}/../../src/vendor.ts`,
     polyfills: `${__dirname}/../../src/polyfills.ts`,
   },
-
   resolve: {
     extensions: ['.ts', '.js'],
   },
-
   module: {
     rules: [
       {
@@ -43,11 +41,11 @@ module.exports = {
       },
     ],
   },
-
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
         APP_URL: JSON.stringify(process.env.APP_URL),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       },
     }),
     // Workaround for angular/angular#11580
