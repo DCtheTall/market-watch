@@ -10,7 +10,7 @@ async function updateStockData() {
     const then = Date.now();
     const { Company } = models;
     const today = (new Date()).toISOString().split('T')[0];
-    const companies = await Company.find({ lastUpdated: { lt: new Date(today) } })
+    const companies = await Company.find({ lastUpdated: { $lt: new Date(today) } })
                                    .limit(200);
     console.log('Starting sync, this will take a while...');
     await Promise.map(
@@ -33,7 +33,7 @@ async function updateStockData() {
 }
 
 const job = new CronJob({
-  cronTime: '0 0 0 * * *', // midnight every day
+  cronTime: '0 * * * *', // every hour every day
   onTick: updateStockData,
   start: false,
   timeZone: 'America/New_York',
