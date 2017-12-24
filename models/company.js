@@ -44,11 +44,13 @@ Company.methods.getStockData = async function getStockData() {
     }).sort((a, b) => new Date(a.date) - new Date(b.date));
     this.data = data;
     this.searchable = true;
+    this.lastUpdated = new Date();
     return await this.save();
   } catch (err) {
     console.log(`Failed to get stock data for ${this.symbol}`);
     this.searchable = false;
     this.active = false;
+    this.lastUpdated = new Date();
     return await this.save();
   }
 }

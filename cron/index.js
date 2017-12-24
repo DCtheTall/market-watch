@@ -1,12 +1,17 @@
+if (!process.env.NODE_ENV) require('dotenv').load();
+
 const { CronJob } = require('cron');
 const models = require('../models');
 const Promise = require('bluebird');
+const { sendEmailToMyself } = require('../lib/nodemailer');
 
 async function updateStockData() {
   try {
     const then = Date.now();
     const { Company } = models;
-    const companies = await Company.find({});
+    const today = (new Date()).toISOString().split('T')[0];
+    const companies = await Company.find({ lastUpdated: { lt: new Date(today) } })
+                                   .limit(200);
     console.log('Starting sync, this will take a while...');
     await Promise.map(
       companies,
@@ -16,6 +21,10 @@ async function updateStockData() {
     const now = Date.now();
     const dt = (now - then) / 1000;
     console.log(`Sync took ${Math.floor(dt / 60)}m ${Math.floor(dt % 60)}s`);
+    await sendEmailToMyself({
+      subject: 'Alpha Vantage Sync',
+      text: `Sync took ${Math.floor(dt / 60)}m ${Math.floor(dt % 60)}s`,
+    });
     if (require.main === module) process.exit(0);
   } catch (err) {
     console.log(err);
