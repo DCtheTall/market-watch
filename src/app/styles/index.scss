@@ -3,4 +3,12 @@
 body {
   background: $background;
   font-family: Roboto;
+  @media #{$mobile} {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+
+    > div {
+      transform: translateZ(0);
+    }
+  }
 }

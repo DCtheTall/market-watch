@@ -22,7 +22,6 @@ export class ChartService {
       this.companiesObserver = observer;
     });
     this.companies.subscribe(this.onCompaniesUpdate.bind(this));
-    window.addEventListener('resize', this.updateChart.bind(this));
   }
 
   private onCompaniesUpdate(data: Company[]): void {

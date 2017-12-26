@@ -12,6 +12,7 @@ company-search {
 }
 
 .company-search-container {
+  align-items: center;
   background: $charcoal;
   display: flex;
   flex-direction: column;
@@ -31,11 +32,12 @@ company-search {
     font-size: 16px;
     margin-bottom: 15px;
     outline: none;
-    width: unquote('calc(100% - 10px)');
+    width: 95%;
   }
 
   .search-results {
     overflow-y: auto;
+    width: 100%;
 
     .search-result {
       align-items: center;
@@ -52,8 +54,12 @@ company-search {
         width: 100%;
       }
 
-      span {
+      div {
         text-align: left;
+      }
+
+      .info {
+        width: 100%;
       }
 
       .symbol {

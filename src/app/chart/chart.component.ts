@@ -36,7 +36,10 @@ export class ChartComponent implements OnInit {
 
   constructor(
     private chartService: ChartService
-  ) {}
+  ) {
+    window.addEventListener('resize', this.updateChart.bind(this));
+    window.addEventListener('orientationchange', () => setTimeout(this.updateChart.bind(this), 1000));
+  }
 
   ngOnInit() {
     this.chartService.chartData.subscribe((data: ChartNode[][]) => {
