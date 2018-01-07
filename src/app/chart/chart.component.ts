@@ -104,7 +104,7 @@ export class ChartComponent implements OnInit {
       scaleValue.attr('text-anchor', 'end')
                 .attr('transform', `translate(${chartWidth - 5}, ${height - 10})`)
                 .attr('class', 'scale-label-text')
-                .text(getYCoord.invert(height));
+                .text(Math.round(getYCoord.invert(height)));
     }
 
     // Line graph
